@@ -253,7 +253,7 @@
 
         // validasi hardcoded
         if (email === "admin@mail.com" && password === "password") {
-          // login berhasil, redirect ke index.html
+          localStorage.setItem("isLoggedIn", "true");
           window.location.href = "index.html";
         } else {
           alert("Email atau password salah!");
