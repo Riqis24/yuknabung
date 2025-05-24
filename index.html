@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -412,6 +417,10 @@
           icon.classList.add("fa-eye");
         }
         visible = !visible;
+      }
+      if (email === "admin@mail.com" && password === "password") {
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "index.html";
       }
     </script>
   </body>
