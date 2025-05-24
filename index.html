@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallet Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome CDN -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+      }
+
+      .icon-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        color: white;
+        font-size: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+      }
+
+      .icon-circle:hover {
+        transform: scale(1.1);
+      }
+
+      .bg-gradient-blue {
+        background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+      }
+
+      .bg-gradient-purple {
+        background: linear-gradient(135deg, #9d50bb, #6e48aa);
+      }
+
+      .bg-gradient-green {
+        background: linear-gradient(135deg, #56ab2f, #a8e063);
+      }
+    </style>
+
+    <style>
+      body {
+        background-color: #f0f2f5;
+        font-family: "Segoe UI", sans-serif;
+      }
+      .wallet-card {
+        max-width: 480px;
+        margin: auto;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .card-balance {
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
+        border-radius: 20px;
+        color: white;
+      }
+      .icon-btn {
+        width: 80px;
+        height: 80px;
+        border-radius: 15px;
+        background-color: #f1f3f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #333;
+        text-decoration: none;
+      }
+      .icon-btn i {
+        font-size: 22px;
+        margin-bottom: 5px;
+      }
+      .transaction-item {
+        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+      }
+      .nav-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background: white;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 10;
+        padding: 0 10px;
+      }
+      .nav-bottom a {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        color: #777;
+        text-decoration: none;
+        position: relative;
+        padding-top: 8px;
+        transition: color 0.3s;
+        user-select: none;
+      }
+      .nav-bottom a i {
+        font-size: 20px;
+        display: block;
+        margin-bottom: 3px;
+      }
+      .nav-bottom a.active {
+        color: #005bea;
+        font-weight: 600;
+      }
+
+      /* Tombol tengah QRIS */
+      .nav-center-btn {
+        position: fixed;
+        bottom: 30px; /* naikkan supaya melayang */
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #005bea, #00c6fb);
+        width: 70px;
+        height: 70px;
+        border-radius: 35px;
+        box-shadow: 0 4px 15px rgba(0, 92, 235, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        z-index: 20;
+        border: 5px solid white;
+        transition: box-shadow 0.3s ease;
+        user-select: none;
+      }
+      .nav-center-btn:hover {
+        box-shadow: 0 6px 25px rgba(0, 92, 235, 0.9);
+      }
+
+      /* Buat space kosong di tengah navbar */
+      .nav-bottom .spacer {
+        flex-basis: 70px; /* lebar tombol tengah */
+        pointer-events: none; /* supaya tidak bisa diklik */
+      }
+    </style>
+    <style>
+      .card-balance-custom {
+        background: linear-gradient(135deg, #005bea, #00c6fb);
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .badge {
+        padding: 4px 6px;
+      }
+    </style>
+    <style>
+      .bg-gradient-blue {
+        background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+        height: 180px;
+      }
+
+      .curved-bg {
+        border-bottom-left-radius: 40% 20%;
+        border-bottom-right-radius: 40% 20%;
+      }
+      .access-card {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 0 12px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #005bea #e0e0e0;
+      }
+
+      .access-card .card {
+        flex: 0 0 auto;
+        min-width: 80px;
+        padding: 10px 8px;
+        border-radius: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      /* Biar bisa scroll horisontal di mobile */
+      .scroll-mobile {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Media Query untuk layar kecil */
+      @media (max-width: 576px) {
+        .access-card {
+          flex-wrap: nowrap !important; /* Supaya 1 baris dan gak wrapping */
+          overflow-x: auto; /* Scroll horizontal */
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .access-card .card {
+          flex: 0 0 auto; /* Ukuran fixed supaya card gak ngecil */
+          min-width: 60px; /* Bisa disesuaikan */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card wallet-card shadow-sm mb-5">
+      <!-- Card Body -->
+      <div class="card-body bg-light">
+        <!-- Saldo -->
+        <!-- HEADER MELENGKUNG DENGAN BACKGROUND DAN SILUET -->
+        <div class="position-relative mb-5" style="z-index: 1">
+          <!-- Background Lengkung -->
+          <div
+            class="bg-gradient-blue curved-bg position-absolute top-0 start-0 w-100"
+          ></div>
+
+          <!-- Siluet Dekoratif -->
+          <div
+            class="position-absolute top-0 end-0 pe-4 pt-4"
+            style="opacity: 0.15; z-index: 1"
+          >
+            <i class="fas fa-university fa-6x text-white"></i>
+          </div>
+
+          <!-- Header & Notifikasi -->
+          <div
+            class="d-flex justify-content-between align-items-center text-white px-4 pt-4 position-relative"
+            style="z-index: 2"
+          >
+            <h5 class="mb-0 fw-bold">Yuk Menabung!</h5>
+            <a href="#" class="text-white position-relative">
+              <i class="fas fa-bell fa-lg"></i>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                style="font-size: 10px"
+              >
+                3
+              </span>
+            </a>
+          </div>
+
+          <!-- Kartu Saldo di Atas Background -->
+          <!-- SALDO UTAMA -->
+          <div class="px-4 position-relative mt-4" style="z-index: 2">
+            <!-- <div
+              class="position-absolute top-0 end-0 pe-4 pt-4"
+              style="opacity: 0.15; z-index: 1"
+            >
+              <i class="fas fa-wallet fa-4x text-white"></i>
+            </div> -->
+            <div
+              class="card p-0 mb-5 border-0 shadow overflow-hidden"
+              style="border-radius: 20px"
+            >
+              <!-- Bagian Atas: Saldo Rekening Utama -->
+              <div
+                class="p-4 text-white"
+                style="background: linear-gradient(135deg, #005bea, #00c6fb)"
+              >
+                <small class="text-uppercase opacity-75"
+                  >Saldo Rekening Utama</small
+                >
+                <div
+                  class="d-flex justify-content-between align-items-center mt-2"
+                >
+                  <h3 id="main-balance" class="mb-0 fw-semibold">
+                    Rp12.500.000
+                  </h3>
+                  <button
+                    class="btn btn-sm text-white"
+                    onclick="toggleBalance()"
+                    style="background: transparent"
+                  >
+                    <i id="eye-icon" class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Bagian Bawah: Menu Lanjutan -->
+              <div class="bg-white text-black p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">Akses Cepat</span>
+                  <div>
+                    <button
+                      class="btn btn-sm btn-outline-dark rounded-pill me-2"
+                    >
+                      Detail
+                    </button>
+                    <button class="btn btn-sm btn-light text-dark rounded-pill">
+                      Transfer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Tombol -->
+        <!-- Menu Tombol Lebih Menarik -->
+
+        <div class="access-card mb-3">
+          <div class="card shadow-sm">
+            <i
+              class="fa-solid fa-arrow-down fa-2x mb-2"
+              style="color: #da3ee5"
+            ></i>
+            <div class="fw-semibold">Tarik Tunai</div>
+          </div>
+          <div class="card shadow-sm">
+            <i
+              class="fa-solid fa-arrow-up fa-2x mb-2"
+              style="color: #329542"
+            ></i>
+            <div class="fw-semibold">Setor Tunai</div>
+          </div>
+          <div class="card shadow-sm">
+            <i
+              class="fa-solid fa-bag-shopping fa-2x mb-2"
+              style="color: #74c0fc"
+            ></i>
+            <div class="fw-semibold">Life Style</div>
+          </div>
+          <div class="card shadow-sm">
+            <i class="fa-solid fa-book fa-2x mb-2" style="color: #f08c00"></i>
+            <div class="fw-semibold">Catatan Keuangan</div>
+          </div>
+          <div class="card shadow-sm">
+            <i
+              class="fa-solid fa-sack-dollar fa-2x mb-2"
+              style="color: #329542"
+            ></i>
+            <div class="fw-semibold">Investasi</div>
+          </div>
+        </div>
+
+        <!-- Riwayat Transaksi -->
+        <h6 class="mb-3">Transaksi Terakhir</h6>
+        <div class="bg-white rounded-4 p-3 shadow-sm">
+          <div class="transaction-item d-flex justify-content-between">
+            <div>
+              <strong>Belanja Tokopedia</strong><br />
+              <small class="text-muted">20 Mei 2025</small>
+            </div>
+            <div class="text-danger">-Rp150.000</div>
+          </div>
+          <div class="transaction-item d-flex justify-content-between">
+            <div>
+              <strong>Top Up Gopay</strong><br />
+              <small class="text-muted">18 Mei 2025</small>
+            </div>
+            <div class="text-danger">-Rp50.000</div>
+          </div>
+          <div class="transaction-item d-flex justify-content-between">
+            <div>
+              <strong>Transfer dari Andi</strong><br />
+              <small class="text-muted">15 Mei 2025</small>
+            </div>
+            <div class="text-success">+Rp200.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation -->
+      <div class="nav-bottom">
+        <a href="#" class="active"> <i class="fas fa-home"></i>Home </a>
+        <a href="#"> <i class="fas fa-wallet"></i>Wallet </a>
+
+        <div class="spacer"></div>
+        <!-- kosong untuk tombol tengah -->
+
+        <a href="#"> <i class="fas fa-user"></i>Profile </a>
+        <a href="#"> <i class="fas fa-cog"></i>Settings </a>
+      </div>
+
+      <div class="nav-center-btn" title="QRIS">
+        <i class="fas fa-qrcode"></i>
+      </div>
+    </div>
+    <script>
+      let visible = true;
+      function toggleBalance() {
+        const balance = document.getElementById("main-balance");
+        const icon = document.getElementById("eye-icon");
+        if (visible) {
+          balance.innerText = "••••••••••";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          balance.innerText = "Rp12.500.000";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+        visible = !visible;
+      }
+    </script>
+  </body>
+</html>

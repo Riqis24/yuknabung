@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome - E-Wallet</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #005bea, #00c6fb);
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+      }
+
+      .title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .language {
+        font-size: 14px;
+      }
+
+      main.main-hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .hero-center-image {
+        width: 70%;
+        max-width: 300px;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .hero-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+      }
+
+      .subtitle {
+        margin-top: 20px;
+        font-size: 16px;
+        opacity: 0.9;
+        color: #fff;
+      }
+
+      footer {
+        padding: 20px;
+        background: white;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        text-align: center;
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #005bea, #00c6fb);
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      /* Overlay Login */
+      .login-form-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        padding: 20px;
+      }
+
+      .login-form {
+        background: white;
+        color: #333;
+        padding: 25px 20px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 360px;
+        position: relative;
+      }
+
+      .login-form h3 {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+        text-align: left;
+      }
+
+      .form-group label {
+        font-size: 14px;
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+      }
+
+      .login-form button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #005bea, #00c6fb);
+        color: white;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .signup-text {
+        margin-top: 15px;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .signup-text a {
+        color: #005bea;
+        text-decoration: none;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        color: #555;
+        cursor: pointer;
+      }
+
+      @media (max-width: 480px) {
+        .login-form {
+          padding: 20px 15px;
+        }
+
+        .hero-image {
+          height: 180px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="language">ID</div>
+      <div class="title">Yuk Menabung</div>
+    </header>
+
+    <main class="main-hero">
+      <img
+        src="image2.jpg"
+        alt="Ilustrasi E-wallet"
+        class="hero-center-image"
+      />
+      <div class="subtitle">Akses Cepat ke Keuanganmu</div>
+    </main>
+
+    <footer>
+      <button class="btn-login" onclick="showLogin()">Masuk</button>
+    </footer>
+
+    <div class="login-form-overlay" id="loginOverlay">
+      <div class="login-form">
+        <div class="close-btn" onclick="hideLogin()">&times;</div>
+        <h3>Masuk ke E-Wallet</h3>
+        <form onsubmit="return handleLogin(event)">
+          <div class="form-group">
+            <label for="email">No. HP atau Email</label>
+            <input
+              type="text"
+              id="email"
+              placeholder="Masukkan No. HP atau Email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Kata Sandi</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Masukkan Kata Sandi"
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <div class="signup-text">Belum punya akun? <a href="#">Daftar</a></div>
+      </div>
+    </div>
+
+    <script>
+      function showLogin() {
+        document.getElementById("loginOverlay").style.display = "flex";
+      }
+
+      function hideLogin() {
+        document.getElementById("loginOverlay").style.display = "none";
+      }
+
+      function handleLogin(event) {
+        event.preventDefault(); // cegah reload halaman
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        // validasi hardcoded
+        if (email === "admin@mail.com" && password === "password") {
+          // login berhasil, redirect ke index.html
+          window.location.href = "index.html";
+        } else {
+          alert("Email atau password salah!");
+        }
+
+        return false; // cegah submit default
+      }
+    </script>
+  </body>
+</html>
